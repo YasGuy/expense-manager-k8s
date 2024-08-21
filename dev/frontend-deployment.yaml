@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: backend
-  name: backend
+    app: frontend
+  name: frontend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: backend
+      app: frontend
   template:
     metadata:
       labels:
-        app: backend
+        app: frontend
     spec:
       containers:
-        - name: node-backend
-          image: yassird/expense-manager-backend:latest
+        - name: react-frontend
+          image: yassird/expense-manager-frontend:57
           env:
             # Non-sensitive data from the ConfigMap
             - name: DB_HOST
@@ -51,16 +51,6 @@ spec:
                   name: db-secrets
                   key: MYSQL_ROOT_PASSWORD
           ports:
-            - containerPort: 5000
+            - containerPort: 80
               protocol: TCP
-          livenessProbe:
-            exec:
-              command:
-                - curl
-                - -f
-                - http://localhost:5000/health
-            failureThreshold: 5
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 10
       restartPolicy: Always
