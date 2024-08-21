@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: manager-argocd-application
+  name: my-app
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/YasGuy/expense-manager-k8s.git
+    path: dev
     targetRevision: HEAD
-    path: dev  # Path to your manifests
   destination:
     server: https://kubernetes.default.svc
-    namespace: expenseManager
+    namespace: default
   syncPolicy:
     automated:
-      selfHeal: true
       prune: true
+      selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - CreateNamespace=true
