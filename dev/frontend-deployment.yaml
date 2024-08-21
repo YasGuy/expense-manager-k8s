@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: react-frontend
-          image: yassird/expense-manager-frontend:57
+          image: yassird/expense-manager-frontend:58
           env:
             # Non-sensitive data from the ConfigMap
             - name: DB_HOST
