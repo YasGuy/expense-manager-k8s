@@ -53,14 +53,4 @@ spec:
           ports:
             - containerPort: 5000
               protocol: TCP
-          livenessProbe:
-            exec:
-              command:
-                - curl
-                - -f
-                - http://localhost:5000/health
-            failureThreshold: 5
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 10
       restartPolicy: Always
