@@ -9,3 +9,4 @@ data:
   DB_NAME: expense_manager
   DB_USER: root
   MYSQL_DATABASE: expense_manager
+  NODE_ENV: production

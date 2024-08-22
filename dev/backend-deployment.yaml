@@ -39,6 +39,12 @@ spec:
                 configMapKeyRef:
                   name: env
                   key: MYSQL_DATABASE
+            # Add the NODE_ENV variable from the ConfigMap
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: env
+                  key: NODE_ENV
             # Sensitive data from the Secret
             - name: DB_PASSWORD
               valueFrom:
