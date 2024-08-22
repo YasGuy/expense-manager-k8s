@@ -59,4 +59,4 @@ spec:
           ports:
             - containerPort: 5000
               protocol: TCP
-      restartPolicy: Always
+      restartPolicy: OnFailure
