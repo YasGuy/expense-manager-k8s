@@ -55,17 +55,18 @@ spec:
           ports:
             - containerPort: 3306
               protocol: TCP
-          livenessProbe:
-            exec:
-              command:
-                - mysqladmin
-                - ping
-                - -h
-                - localhost
-            failureThreshold: 5
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 10
+          # Comment out or remove the livenessProbe section
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - mysqladmin
+          #       - ping
+          #       - -h
+          #       - localhost
+          #   failureThreshold: 5
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          #   timeoutSeconds: 10
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: db-data
