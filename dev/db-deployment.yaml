@@ -69,7 +69,6 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: db-data
-      restartPolicy: Never
       volumes:
         - name: db-data
           persistentVolumeClaim:
