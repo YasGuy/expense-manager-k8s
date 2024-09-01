@@ -4,9 +4,10 @@ metadata:
   name: backend
 spec:
   type: NodePort
-  ports:
-    - port: 5000
-      targetPort: 5000
-      nodePort: 30001
   selector:
     app: backend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30081

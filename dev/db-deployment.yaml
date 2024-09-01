@@ -1,76 +1,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: db
-  name: db
+  name: mongodb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: db
-  strategy:
-    type: Recreate
+      app: mongodb
   template:
     metadata:
       labels:
-        app: db
+        app: mongodb
     spec:
-      containers:
-        - name: mysql-db
-          image: mysql:9.0
-          env:
-            # Non-sensitive data from ConfigMap
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: DB_HOST
-            - name: DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: DB_NAME
-            - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: DB_USER
-            - name: MYSQL_DATABASE
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: MYSQL_DATABASE
-            # Sensitive data from Secret
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: DB_PASSWORD
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: MYSQL_ROOT_PASSWORD
-          ports:
-            - containerPort: 3306
-              protocol: TCP
-          # Comment out or remove the livenessProbe section
-          # livenessProbe:
-          #   exec:
-          #     command:
-          #       - mysqladmin
-          #       - ping
-          #       - -h
-          #       - localhost
-          #   failureThreshold: 5
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 10
-          #   timeoutSeconds: 10
-          volumeMounts:
-            - mountPath: /var/lib/mysql
-              name: db-data
       volumes:
-        - name: db-data
+        - name: mongodb-data
           persistentVolumeClaim:
-            claimName: db-data
+            claimName: mongodb-pvc
+      containers:
+        - name: mongodb
+          image: mongo:7.0
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db
+          ports:
+            - containerPort: 27017
+          envFrom:
+            - configMapRef:
+                name: expense-tracker-config
+      initContainers:
+        - name: init-seed
+          image: mongo:7.0
+          command: ['mongo']
+          args:
+            - "--eval"
+            - >
+              db = connect('mongodb://localhost:27017/expense-tracker');
+              db.categories.insertMany([
+                { "label": "Groceries", "color": "#FFEB3B", "type": "expense" },
+                { "label": "Dining Out", "color": "#FF5722", "type": "expense" },
+                { "label": "Rent/Mortgage", "color": "#4CAF50", "type": "expense" },
+                { "label": "Transportation", "color": "#03A9F4", "type": "expense" },
+                { "label": "Healthcare", "color": "#8BC34A", "type": "expense" },
+                { "label": "Entertainment", "color": "#9C27B0", "type": "expense" },
+                { "label": "Income", "color": "#00BCD4", "type": "income" },
+                { "label": "Salary", "color": "#009688", "type": "income" },
+                { "label": "Business Income", "color": "#FFC107", "type": "income" },
+                { "label": "Investment Income", "color": "#FF9800", "type": "income" }
+              ]);

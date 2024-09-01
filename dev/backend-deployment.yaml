@@ -1,8 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: backend
   name: backend
 spec:
   replicas: 2
@@ -15,47 +13,10 @@ spec:
         app: backend
     spec:
       containers:
-        - name: node-backend
-          image: yassird/expense-manager-backend:58
-          env:
-            # Non-sensitive data from the ConfigMap
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: DB_HOST
-            - name: DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: DB_NAME
-            - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: DB_USER
-            - name: MYSQL_DATABASE
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: MYSQL_DATABASE
-            # Add the NODE_ENV variable from the ConfigMap
-            - name: NODE_ENV
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: NODE_ENV
-            # Sensitive data from the Secret
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: DB_PASSWORD
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: MYSQL_ROOT_PASSWORD
+        - name: backend
+          image: yassird/expense-tracker-backend:latest
           ports:
-            - containerPort: 5000
-              protocol: TCP
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: expense-tracker-config

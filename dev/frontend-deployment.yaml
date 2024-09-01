@@ -1,8 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: frontend
   name: frontend
 spec:
   replicas: 2
@@ -15,42 +13,10 @@ spec:
         app: frontend
     spec:
       containers:
-        - name: react-frontend
-          image: yassird/expense-manager-frontend:58
-          env:
-            # Non-sensitive data from the ConfigMap
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: DB_HOST
-            - name: DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: DB_NAME
-            - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: DB_USER
-            - name: MYSQL_DATABASE
-              valueFrom:
-                configMapKeyRef:
-                  name: env
-                  key: MYSQL_DATABASE
-            # Sensitive data from the Secret
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: DB_PASSWORD
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: MYSQL_ROOT_PASSWORD
+        - name: frontend
+          image: yassird/expense-tracker-frontend:latest
           ports:
             - containerPort: 80
-              protocol: TCP
-      restartPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: expense-tracker-config
