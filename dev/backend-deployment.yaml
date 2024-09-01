@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: node-backend
-          image: yassird/expense-manager-backend:latest
+          image: yassird/expense-manager-backend:63
           env:
             # Non-sensitive data from the ConfigMap
             - name: DB_HOST
