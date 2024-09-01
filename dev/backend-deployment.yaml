@@ -58,7 +58,7 @@ spec:
               command:
                 - curl
                 - -f
-                - http://localhost:5000/health
+                - http://192.168.49.2:30001/health
             failureThreshold: 5
             initialDelaySeconds: 30
             periodSeconds: 10
