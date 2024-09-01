@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: yassird/expense-tracker-backend:latest
+          image: yassird/expense-tracker-backend:3
           ports:
             - containerPort: 3000
           envFrom:

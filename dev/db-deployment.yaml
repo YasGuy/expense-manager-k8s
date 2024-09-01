@@ -34,7 +34,7 @@ spec:
           args:
             - "--eval"
             - >
-              db = connect('mongodb://localhost:27017/expense-tracker');
+              db = connect('mongodb://monogodb:27017/expense-tracker');
               db.categories.insertMany([
                 { "label": "Groceries", "color": "#FFEB3B", "type": "expense" },
                 { "label": "Dining Out", "color": "#FF5722", "type": "expense" },
