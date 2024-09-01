@@ -30,7 +30,7 @@ spec:
       initContainers:
         - name: init-seed
           image: mongo:7.0
-          command: ['mongo']
+          command: ['mongosh']
           args:
             - "--eval"
             - >
